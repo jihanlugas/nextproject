@@ -16,7 +16,7 @@ const appPayLoad = {
 
 class Api {
     static get = (requestPath: string, payload?: {}) => {
-        payload = toSnake({ ...payload, ...appPayLoad });
+        payload = { ...payload, ...appPayLoad };
 
         const url = "/api" + requestPath;
 
@@ -30,13 +30,13 @@ class Api {
             params: payload,
             timeout: 20000,
             responseType: 'json',
-        }).then((res: { data: any; }) => toCamel(res.data), (error: { response: { data: any; status: any; }; }) => error.response.data);
+        }).then((res: { data: any; }) => res.data, (error: { response: { data: any; status: any; }; }) => error.response.data);
 
         return request;
     }
 
     static post = (requestPath: string, payload?: {}) => {
-        payload = toSnake({ ...payload, ...appPayLoad });
+        payload = { ...payload, ...appPayLoad };
         const url = "/api" + requestPath;
 
         const request = axios.request({
@@ -49,7 +49,7 @@ class Api {
             data: payload,
             timeout: 20000,
             responseType: 'json',
-        }).then((res: { data: any; }) => toCamel(res.data), (error: { response: { data: any; status: any; }; }) => error.response.data);
+        }).then((res: { data: any; }) => res.data, (error: { response: { data: any; status: any; }; }) => error.response.data);
 
         // const request = fetch(url, {
         //     method: "POST",
@@ -67,7 +67,7 @@ class Api {
     }
     
     static put = (requestPath: string, payload?: {}) => {
-        payload = toSnake({ ...payload, ...appPayLoad });
+        payload = { ...payload, ...appPayLoad };
 
         const url = "/api" + requestPath;
 
@@ -81,13 +81,13 @@ class Api {
             data: payload,
             timeout: 20000,
             responseType: 'json',
-        }).then((res: { data: any; }) => toCamel(res.data), (error: { response: { data: any; status: any; }; }) => error.response.data);
+        }).then((res: { data: any; }) => res.data, (error: { response: { data: any; status: any; }; }) => error.response.data);
 
         return request;
     }
 
     static delete = (requestPath: string, payload?: {}) => {
-        payload = toSnake({ ...payload, ...appPayLoad });
+        payload = { ...payload, ...appPayLoad };
 
         const url = "/api" + requestPath;
 
@@ -101,7 +101,7 @@ class Api {
             data: payload,
             timeout: 20000,
             responseType: 'json',
-        }).then((res: { data: any; }) => toCamel(res.data), (error: { response: { data: any; status: any; }; }) => error.response.data);
+        }).then((res: { data: any; }) => res.data, (error: { response: { data: any; status: any; }; }) => error.response.data);
 
         return request;
     }

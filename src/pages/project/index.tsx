@@ -7,6 +7,7 @@ import { UsePage } from '../../hooks/useMutation';
 import { withNotif } from '../../hoc/withNotif';
 import { withQuery } from '../../hoc/withQuery';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import ModalCreateProject from "../../components/modal/ModalCreateProject";
 
 
 interface Props {
@@ -32,7 +33,9 @@ interface paginate {
 
 const Project: NextPage<Props> = ({ notif }) => {
 
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState("");
+    const [show, setShow] = useState<boolean>(false);
+    const [selectedId, setSelectedId] = useState<number>(0);
     const [project, setProject] = useState<{ [key: string]: any; }>([]);
     const [paginate, setPaginate] = useState<paginate>(defaultPaginate)
     const [toogle, setToggle] = useState<boolean>(true);
@@ -49,8 +52,12 @@ const Project: NextPage<Props> = ({ notif }) => {
         })
     }, [toogle, paginate])
 
-    const onClickOverlay = () => {
-        console.log("onClickOverlay")
+    const onClickOverlay = (kanjiId: number = 0, refresh: boolean = false) => {
+        setSelectedId(kanjiId)
+        setShow(!show)
+        if (refresh) {
+            setToggle(!toogle)
+        }
     }
 
     const perPage = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -60,10 +67,6 @@ const Project: NextPage<Props> = ({ notif }) => {
     const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value)
     }
-
-    console.log("Project => ", project)
-
-
 
     return (
         <User>
@@ -75,8 +78,6 @@ const Project: NextPage<Props> = ({ notif }) => {
                 <div className="mb-2">
                     <span className="text-xl py-2">Project</span>
                 </div>
-            </div>
-            <div className={"flex flex-col w-full"}>
             </div>
             <div className={"flex px-4 py-2 w-full justify-end"}>
                 <button className={"bg-green-400 p-2 rounded text-gray-100 font-bold flex items-center"} onClick={() => onClickOverlay()}>
@@ -128,25 +129,40 @@ const Project: NextPage<Props> = ({ notif }) => {
                         <div>No Data</div>
                     </div>
                 ) : (
-                    <div className={""}>
-                        {project.map((data, key) => {
-                            return (
-                                <div className={"px-4 mb-4"} key={key}>
-                                    <div className={"bg-gray-50 shadow p-2 rounded"}>
-                                        <div className={"bg-gray-700 text-gray-100 p-2 rounded mb-1 text-lg"}>
-                                            <div>{data.name}</div>
+                    <div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-4 px-4">
+                            {project.map((data, key) => {
+                                return (
+                                    <div className={"bg-gray-50 shadow rounded "} key={key}>
+                                        <div className={"px-2 pt-2 mb-2"}>
+                                            <div className={"bg-gray-700 text-gray-100 p-2 rounded mb-1 text-lg"}>
+                                                <div>{data.name}</div>
+                                            </div>
+                                            <div>{data.location}</div>
+                                            <div>{data.description}</div>
+                                            <div>{data.startAt}</div>
+                                            <div>{data.endAt}</div>
                                         </div>
-                                        <div>{data.location}</div>
-                                        <div>{data.description}</div>
-                                        <div>{data.startAt}</div>
-                                        <div>{data.endAt}</div>
+                                        <div className={"p-2 mb-2"}>
+                                            <div className={"grid grid-cols-3 gap-2"}>
+                                                <div className={"border rounded p-2 flex justify-center items-center"}>Task</div>
+                                                <div className={"border rounded p-2 flex justify-center items-center"}>Store</div>
+                                                <div className={"border rounded p-2 flex justify-center items-center"}>Store</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
+                        </div>
                     </div>
                 )}
             </div>
+            <ModalCreateProject
+                show={show}
+                onClickOverlay={onClickOverlay}
+                selectedId={selectedId}
+                notif={notif}
+            />
         </User>
     )
 }

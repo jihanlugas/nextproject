@@ -92,3 +92,21 @@ export function UseVocabularyForm() {
         },
     })
 }
+
+
+export function UseProjectForm() {
+    return useMutation((id:number) => Api.get("/project/" + id), {
+        onSuccess: (res) => {
+            logout(res)
+        },
+    })
+}
+
+
+export function UseSubmitProject() {
+    return useMutation((values: FormikValues) => values.id === 0 ? Api.post("/project", values) : Api.put("/project/" + values.id, values), {
+        onSuccess: (res) => {
+            logout(res)
+        },
+    })
+}
