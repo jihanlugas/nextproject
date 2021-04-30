@@ -36,8 +36,8 @@ const schema = Yup.object().shape({
     name: Yup.string().required().label("Project Name"),
     location: Yup.string().required().label("Project Location"),
     description: Yup.string().required().label("Project Description"),
-    startAt: Yup.string().required().label("Project Start"),
-    endAt: Yup.string().required().label("Project End"),
+    startAt: Yup.string().label("Project Start"),
+    endAt: Yup.string().label("Project End"),
 });
 
 const ModalCreateProject: NextPage<Props> = ({ show, onClickOverlay, selectedId = 0, notif }) => {
@@ -54,6 +54,7 @@ const ModalCreateProject: NextPage<Props> = ({ show, onClickOverlay, selectedId 
             // } else {
             form.mutate(selectedId, {
                 onSuccess: (res) => {
+                    console.log("res ", res)
                     if (res.success) {
                         setInit(res.data)
                     } else if (res.errors) {
@@ -66,8 +67,10 @@ const ModalCreateProject: NextPage<Props> = ({ show, onClickOverlay, selectedId 
     }, [selectedId, show])
 
     const handleSubmit = (values: FormikValues, setErrors) => {
+
         submit.mutate(values, {
             onSuccess: (res) => {
+                console.log("res ", res)
                 if (res.success) {
                     notif.success(res.message)
                     setInit({})

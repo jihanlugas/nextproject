@@ -8,6 +8,8 @@ import { withNotif } from '../../hoc/withNotif';
 import { withQuery } from '../../hoc/withQuery';
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import ModalCreateProject from "../../components/modal/ModalCreateProject";
+import { FiEdit2, FiTrash } from 'react-icons/fi'
+
 
 
 interface Props {
@@ -52,8 +54,8 @@ const Project: NextPage<Props> = ({ notif }) => {
         })
     }, [toogle, paginate])
 
-    const onClickOverlay = (kanjiId: number = 0, refresh: boolean = false) => {
-        setSelectedId(kanjiId)
+    const onClickOverlay = (id: number = 0, refresh: boolean = false) => {
+        setSelectedId(id)
         setShow(!show)
         if (refresh) {
             setToggle(!toogle)
@@ -66,6 +68,10 @@ const Project: NextPage<Props> = ({ notif }) => {
 
     const handleChangeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value)
+    }
+
+    const handleDelete = (id: number) => {
+        console.log("handleDelete ", id)
     }
 
     return (
@@ -142,6 +148,16 @@ const Project: NextPage<Props> = ({ notif }) => {
                                             <div>{data.description}</div>
                                             <div>{data.startAt}</div>
                                             <div>{data.endAt}</div>
+                                        </div>
+                                        <div className={"mb-2"}>
+                                            <div className={"flex justify-center items-center"}>
+                                                <div className={"p-2 flex justify-center items-center mx-2 bg-gray-700 text-gray-100 rounded-full"} onClick={() => onClickOverlay(data.id)}>
+                                                    <FiEdit2 size={"1em"} />
+                                                </div>
+                                                <div className={"p-2 flex justify-center items-center mx-2 bg-gray-700 text-gray-100 rounded-full"} onClick={() => handleDelete(data.id)}>
+                                                    <FiTrash size={"1em"} />
+                                                </div>
+                                            </div>
                                         </div>
                                         <div className={"p-2 mb-2"}>
                                             <div className={"grid grid-cols-3 gap-2"}>
